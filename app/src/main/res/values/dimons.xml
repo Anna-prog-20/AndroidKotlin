@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indent">4dp</dimen>
+    <dimen name="width_lines">2dp</dimen>
+    <dimen name="radius">5dp</dimen>
+    <dimen name="cardRadius">10dp</dimen>
+</resources>
