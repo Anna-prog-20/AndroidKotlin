@@ -29,7 +29,7 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
         holder.bind(notes[position])
     }
 
-    override fun getItemCount(): Int = notes.size ?: 0
+    override fun getItemCount(): Int = notes.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ui: ItemBinding = ItemBinding.bind(itemView)
@@ -39,12 +39,6 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
             ui.itemText.text = note.text
             val color = note.color
             itemView.setBackgroundColor(color)
-            ui.itemTopic.setOnClickListener(View.OnClickListener {
-                onItemClickCallback.onItemClicked(note)
-            })
-            ui.itemText.setOnClickListener(View.OnClickListener {
-                onItemClickCallback.onItemClicked(note)
-            })
             itemView.setOnClickListener(View.OnClickListener {
                 onItemClickCallback.onItemClicked(note)
             })

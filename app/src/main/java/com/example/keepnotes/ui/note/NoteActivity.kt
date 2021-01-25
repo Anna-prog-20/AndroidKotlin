@@ -55,7 +55,6 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
 
     private fun triggerSaveNote() {
         if (ui.titleEt.text == null || ui.titleEt.text!!.length < 3) return
-
         note = note?.copy(
             topic = ui.titleEt.text.toString(),
             text = ui.textEt.text.toString(),
@@ -73,6 +72,10 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
         setContentView(ui.root)
 
         note = intent.getParcelableExtra(EXTRA_NOTE)
+
+        if (note?.color != null) {
+            colorSelected = note!!.color
+        }
 
         initToolBar()
         initView()
