@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 
 object Repository {
     private val notesLiveData = MutableLiveData<List<Note>>()
-
     private var notes: MutableList<Note> = mutableListOf()
 
     init {

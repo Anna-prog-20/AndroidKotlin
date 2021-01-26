@@ -37,11 +37,8 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
         fun bind(note: Note) {
             ui.itemTopic.text = note.topic
             ui.itemText.text = note.text
-            val color = note.color
-            itemView.setBackgroundColor(color)
-            itemView.setOnClickListener(View.OnClickListener {
-                onItemClickCallback.onItemClicked(note)
-            })
+            itemView.setBackgroundColor(note.color)
+            itemView.setOnClickListener { onItemClickCallback.onItemClicked(note) }
         }
 
     }

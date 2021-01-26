@@ -6,27 +6,25 @@ import androidx.core.content.ContextCompat.getColor
 import com.example.keepnotes.R
 
 @SuppressLint("ResourceType")
-fun initArrayList(context: Context, count: Int): MutableList<Note> {
+fun initArrayList(context: Context, count: Int): List<Note> {
     var i = 1
     val arrayList: MutableList<Note> = mutableListOf()
-    while (i <= count) {
-        if (i <= 5)
-            arrayList.add(
+    for (i in 1..count) {
+        arrayList.add(
+            if (i <= 5) {
                 Note(
                     topic = "Заголовок №" + i,
                     text = "Мои первые записки!!!",
                     color = getColor(context, R.color.color_yello)
                 )
-            )
-        else
-            arrayList.add(
+            } else {
                 Note(
                     topic = "Заголовок №" + i,
                     text = "Уже намного лучше - вывели много много заметок!!!",
                     color = getColor(context, R.color.color_violet)
                 )
-            )
-        i++;
+            }
+        )
     }
     return arrayList
 }

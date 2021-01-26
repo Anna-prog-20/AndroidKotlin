@@ -19,7 +19,7 @@ class MainActivity() : AppCompatActivity() {
     lateinit var ui: ActivityMainBinding
     lateinit var viewModel: MainViewModel
     lateinit var adapter: RecyclerAdapter
-    private var arrayList: MutableList<Note> = mutableListOf()
+    private var arrayList: List<Note> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class MainActivity() : AppCompatActivity() {
         setSupportActionBar(ui.toolbar)
         ui.fab.setOnClickListener { openNoteScreen(null) }
         arrayList = initArrayList(this,20)
-        Repository.setNotes(arrayList)
+        Repository.setNotes(arrayList.toMutableList())
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setupRecyclerView()
     }
