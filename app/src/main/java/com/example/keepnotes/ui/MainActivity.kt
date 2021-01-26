@@ -29,8 +29,8 @@ class MainActivity() : AppCompatActivity() {
         setSupportActionBar(ui.toolbar)
         ui.fab.setOnClickListener { openNoteScreen(null) }
         arrayList = initArrayList(this,20)
-        Repository.setNotes(arrayList.toMutableList())
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.setNotes(arrayList)
         setupRecyclerView()
     }
 
