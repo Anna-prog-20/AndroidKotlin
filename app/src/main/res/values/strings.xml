@@ -9,4 +9,5 @@
     <string name="new_note_title">Новая заметка</string>
     <string name="lable_color">Цыет заметки</string>
     <string name="colorSelected">Выбрать цвет</string>
+    <string name="button_ok">ok</string>
 </resources>

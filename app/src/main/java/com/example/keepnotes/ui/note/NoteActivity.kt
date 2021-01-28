@@ -15,6 +15,7 @@ import com.example.keepnotes.R
 import com.example.keepnotes.databinding.ActivityMainBinding
 import com.example.keepnotes.databinding.ActivityNoteBinding
 import com.example.keepnotes.model.DATE_TIME_FORMAT
+import com.example.keepnotes.model.NameActivity
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.ui.base.BaseActivity
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
@@ -39,7 +40,10 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(),
 
     override val layoutRes: Int
         get() = R.layout.activity_note
-    val ui: ActivityNoteBinding = ActivityNoteBinding.inflate(layoutInflater)
+    override val nameActivity: NameActivity
+        get() = NameActivity.note
+    private lateinit var ui: ActivityNoteBinding
+
     //lateinit var ui: ActivityNoteBinding
     private var note: Note? = null
     override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
@@ -75,7 +79,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //ui = ActivityNoteBinding.inflate(layoutInflater)
+        ui = ActivityNoteBinding.inflate(layoutInflater)
         setContentView(ui.root)
         val noteId = intent.getStringExtra(EXTRA_NOTE)
         initToolBar()

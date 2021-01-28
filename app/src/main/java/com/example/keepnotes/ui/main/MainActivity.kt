@@ -6,13 +6,15 @@ import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.keepnotes.R
+import com.example.keepnotes.databinding.ActivityMainBinding
+import com.example.keepnotes.model.NameActivity
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.ui.base.BaseActivity
 import com.example.keepnotes.ui.note.NoteActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-abstract class MainActivity() : BaseActivity<List<Note>?, MainViewState>() {
+class MainActivity() : BaseActivity<List<Note>?, MainViewState>() {
 
     override val layoutRes: Int
         get() {
@@ -21,14 +23,14 @@ abstract class MainActivity() : BaseActivity<List<Note>?, MainViewState>() {
     override val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
-    //lateinit var ui: ActivityMainBinding
+    override val nameActivity: NameActivity
+        get() = NameActivity.main
+
     lateinit var adapter: RecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //ui = ActivityMainBinding.inflate(layoutInflater)
-        setSupportActionBar(toolbar)
         fab.setOnClickListener { openNoteScreen(null) }
         setupRecyclerView()
     }
@@ -69,5 +71,6 @@ abstract class MainActivity() : BaseActivity<List<Note>?, MainViewState>() {
         if (data == null) return
         adapter.notes = data
     }
+
 }
 
