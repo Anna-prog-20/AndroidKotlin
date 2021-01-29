@@ -1,0 +1,8 @@
+com/example/keepnotes/databinding/ActivityMainBinding.java
+ com.example.keepnotes.databinding.ActivityMainBinding
+com/example/keepnotes/BuildConfig.java
+ com.example.keepnotes.BuildConfig
+com/example/keepnotes/databinding/ActivityNoteBinding.java
+ com.example.keepnotes.databinding.ActivityNoteBinding
+com/example/keepnotes/databinding/ItemBinding.java
+ com.example.keepnotes.databinding.ItemBinding
