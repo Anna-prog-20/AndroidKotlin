@@ -1,5 +1,9 @@
 com/example/keepnotes/databinding/ActivityMainBinding.java
  com.example.keepnotes.databinding.ActivityMainBinding
+com/example/keepnotes/DataBindingTriggerClass.java
+ com.example.keepnotes.DataBindingTriggerClass
+com/example/keepnotes/databinding/ActivitySplashBinding.java
+ com.example.keepnotes.databinding.ActivitySplashBinding
 com/example/keepnotes/BuildConfig.java
  com.example.keepnotes.BuildConfig
 com/example/keepnotes/databinding/ActivityNoteBinding.java

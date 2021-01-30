@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/src/main/res/values-night/themes.xml",
+                    "source": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/src/main/res/values-night/themes.xml",
                     "from": {
                         "startLines": "2,15",
                         "startColumns": "4,4",

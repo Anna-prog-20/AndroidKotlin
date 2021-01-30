@@ -1,14 +1,18 @@
 [
     {
-        "merged": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_note.xml",
-        "source": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/src/main/res/layout/activity_note.xml"
+        "merged": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_note.xml",
+        "source": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/src/main/res/layout/activity_note.xml"
     },
     {
-        "merged": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item.xml",
-        "source": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/src/main/res/layout/item.xml"
+        "merged": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_main.xml",
+        "source": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/src/main/res/layout/activity_main.xml"
     },
     {
-        "merged": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_main.xml",
-        "source": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/src/main/res/layout/activity_main.xml"
+        "merged": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/item.xml",
+        "source": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/src/main/res/layout/item.xml"
+    },
+    {
+        "merged": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_splash.xml",
+        "source": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/src/main/res/layout/activity_splash.xml"
     }
 ]

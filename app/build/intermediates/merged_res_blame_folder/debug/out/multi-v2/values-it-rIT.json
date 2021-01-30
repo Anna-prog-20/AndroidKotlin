@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/anna/Documents/Android - Kotlin/Lesson4/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-it-rIT/values-it-rIT.xml",
+            "outputFile": "/Users/anna/Documents/Android - Kotlin/Lesson5/KeepNotes/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-it-rIT/values-it-rIT.xml",
             "map": [
                 {
                     "source": "/Users/anna/.gradle/caches/transforms-2/files-2.1/dfb0bc501bf634f2c8f039bd5dc6cd55/jetified-colorpicker-1.1.0/res/values-it-rIT/values-it-rIT.xml",
