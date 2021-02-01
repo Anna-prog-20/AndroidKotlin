@@ -12,7 +12,6 @@ private const val START_DELAY = 1000L
 
 class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
     override val ui: ActivitySplashBinding by lazy { ActivitySplashBinding.inflate(layoutInflater) }
-    override val nameActivity: NameActivity = NameActivity.splash
     override val viewModel: SplashViewModel by lazy {
         ViewModelProvider(this).get(SplashViewModel::class.java)
     }

@@ -17,7 +17,6 @@ private const val RC_SIGN_IN = 458
 abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
 
     abstract val viewModel: BaseViewModel<T, S>
-    abstract val nameActivity: NameActivity
     abstract val ui: ViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

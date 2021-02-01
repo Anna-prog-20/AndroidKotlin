@@ -35,7 +35,6 @@ class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
     override val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
-    override val nameActivity: NameActivity = NameActivity.main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

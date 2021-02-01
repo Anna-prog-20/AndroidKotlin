@@ -6,9 +6,9 @@ import java.util.*
 const val DATE_TIME_FORMAT = "dd.MMMM.yy HH:mm"
 
 enum class NameActivity {
-    main,
-    note,
-    splash
+    MAIN,
+    NOTE,
+    SPLASH
 }
 
 fun Date.format(): String =
