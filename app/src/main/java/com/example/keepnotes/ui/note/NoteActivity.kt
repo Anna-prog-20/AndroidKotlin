@@ -64,8 +64,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(),
             lastChanged = Date()
         )
             ?: createNewNote()
-
-        if (note != null) viewModel.saveChanges(note!!)
+        note?.let { viewModel.saveChanges(it) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
