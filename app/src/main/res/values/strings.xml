@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Записи</string>
+
+    <string name="notes">Заметки</string>
+    <string name="topicNotes">Заголовок</string>
+
+    <string name="addNote">Добавить заметку</string>
+    <string name="deleteNote">Удалить заметку</string>
+    <string name="changeNote">Изменить заметку</string>
+    <string name="logout">Выйти из аккаунта</string>
+    <string name="textNote">Текст заметки</string>
+    <string name="new_note_title">Новая заметка</string>
+    <string name="lable_color">Цыет заметки</string>
+    <string name="colorSelected">Выбрать цвет</string>
+    <string name="button_ok">ok</string>
+    <string name="button_cancel">Отмена</string>
+
+    <string name="logout_dialog_title">Выйти из аккаунта?</string>
+    <string name="logout_dialog_message">Все ваши заметки будут сохранены.
+        Вы сможете получить к ним доступ после авторизаци.</string>
+
+    <string name="delete_note_dialog_title">Удаление записи!</string>
+    <string name="delete_note_dialog_message">Вы действительно хотите удалить данную запись?</string>
+
+</resources>
