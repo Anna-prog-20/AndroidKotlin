@@ -7,8 +7,8 @@ import java.util.*
 @Parcelize
 data class Note(
     val id: String = UUID.randomUUID().toString(),
-    var topic: String,
-    var text: String,
+    var topic: String = "",
+    var text: String = "",
     var color: Int = 5,
     val lastChanged: Date = Date()
 ) : Parcelable {

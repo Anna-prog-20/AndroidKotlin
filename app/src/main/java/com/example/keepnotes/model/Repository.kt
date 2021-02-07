@@ -11,26 +11,33 @@ object Repository {
         notesLiveData.value = notes
     }
 
-    fun getNotes(): LiveData<List<Note>> = notesLiveData
+    //fun getNotes(): LiveData<List<Note>> = notesLiveData
 
     fun setNotes(listNotes: MutableList<Note>) {
         notes = listNotes
         notesLiveData.value = notes
     }
 
-    fun saveNote(note: Note) {
-        addOrReplace(note)
-        notesLiveData.value = notes
-    }
+//    fun saveNote(note: Note) {
+//        addOrReplace(note)
+//        notesLiveData.value = notes
+//    }
 
-    private fun addOrReplace(note: Note) {
-        for (i in 0 until notes.size) {
-            if (notes[i] == note) {
-                notes[i] = note
-                return
-            }
-        }
-        notes.add(note)
-    }
+//    private fun addOrReplace(note: Note) {
+//        for (i in 0 until notes.size) {
+//            if (notes[i] == note) {
+//                notes[i] = note
+//                return
+//            }
+//        }
+//        notes.add(note)
+//    }
+
+
+    private val remoteProvider: RemoteDataProvider = FireStoreProvider()
+
+    fun getNotes() = remoteProvider.subscribeToAllNotes()
+    fun saveNote(note: Note) = remoteProvider.saveNote(note)
+    fun getNoteById(id: String) = remoteProvider.getNoteById(id)
 
 }

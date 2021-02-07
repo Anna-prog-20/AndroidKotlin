@@ -12,9 +12,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.keepnotes.R
+import com.example.keepnotes.databinding.ActivityMainBinding
 import com.example.keepnotes.databinding.ActivityNoteBinding
 import com.example.keepnotes.model.DATE_TIME_FORMAT
+import com.example.keepnotes.model.NameActivity
 import com.example.keepnotes.model.Note
+import com.example.keepnotes.ui.base.BaseActivity
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.jaredrummler.android.colorpicker.ColorShape
@@ -22,21 +25,29 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
+class NoteActivity : BaseActivity<Note?, NoteViewState>(),
+    ColorPickerDialogListener {
 
     companion object {
         private var EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
 
-        fun getStartIntent(context: Context, note: Note?): Intent {
+        fun getStartIntent(context: Context, noteId: String?): Intent {
             val intent = Intent(context, NoteActivity::class.java)
-            intent.putExtra(EXTRA_NOTE, note)
+            intent.putExtra(EXTRA_NOTE, noteId)
             return intent
         }
     }
 
-    private var note: Note? = null
+    override val layoutRes: Int
+        get() = R.layout.activity_note
+    override val nameActivity: NameActivity
+        get() = NameActivity.note
     private lateinit var ui: ActivityNoteBinding
-    private lateinit var viewModel: NoteViewModel
+
+    //lateinit var ui: ActivityNoteBinding
+    private var note: Note? = null
+    override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+
     private var colorSelected: Int = 0
     private val textChangeListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -54,10 +65,10 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
     }
 
     private fun triggerSaveNote() {
-        if (ui.titleEt.text == null || ui.titleEt.text!!.length < 3) return
+        if (ui!!.titleEt.text == null || ui!!.titleEt.text!!.length < 3) return
         note = note?.copy(
-            topic = ui.titleEt.text.toString(),
-            text = ui.textEt.text.toString(),
+            topic = ui!!.titleEt.text.toString(),
+            text = ui!!.textEt.text.toString(),
             color = colorSelected,
             lastChanged = Date()
         )
@@ -70,20 +81,12 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
         super.onCreate(savedInstanceState)
         ui = ActivityNoteBinding.inflate(layoutInflater)
         setContentView(ui.root)
-
-        note = intent.getParcelableExtra(EXTRA_NOTE)
-
-        if (note?.color != null) {
-            colorSelected = note!!.color
-        }
-
+        val noteId = intent.getStringExtra(EXTRA_NOTE)
         initToolBar()
-        initView()
-
-        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+        noteId?.let { viewModel.loadNote(noteId) }
     }
 
-    fun initToolBar() {
+    private fun initToolBar() {
         setSupportActionBar(ui.toolbar)
         ui.toolbar.setNavigationOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -92,7 +95,11 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
             }
         })
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setTitleToolBar()
 
+    }
+
+    private fun setTitleToolBar() {
         supportActionBar?.title = if (note != null) {
             SimpleDateFormat(
                 DATE_TIME_FORMAT,
@@ -103,7 +110,7 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
         }
     }
 
-    fun initView() {
+    private fun initView() {
         if (note != null) {
             ui.titleEt.setText(note?.topic ?: "")
             ui.textEt.setText(note?.text ?: "")
@@ -138,7 +145,7 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun createColorPickerDialog() {
-        var colorPickerDialog = ColorPickerDialog.newBuilder()
+        val colorPickerDialog = ColorPickerDialog.newBuilder()
             .setColor(getColor(R.color.color_yello))
             .setDialogType(ColorPickerDialog.TYPE_PRESETS)
             .setAllowCustom(true)
@@ -154,5 +161,12 @@ class NoteActivity : AppCompatActivity(), ColorPickerDialogListener {
     @RequiresApi(Build.VERSION_CODES.M)
     fun onClickButton(view: View) {
         createColorPickerDialog()
+    }
+
+    override fun renderData(data: Note?) {
+        this.note = data
+        colorSelected = note?.color ?: 0
+        initView()
+        setTitleToolBar()
     }
 }
