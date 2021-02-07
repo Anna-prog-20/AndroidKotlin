@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/indent"
     android:layout_margin="@dimen/indent"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="@drawable/example"
-    android:orientation="vertical">
+    app:cardCornerRadius="@dimen/cardRadius"
+    android:padding="@dimen/indent">
 
-        <TextView
-            android:id="@+id/itemTopic"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/indent"
-            android:inputType="textMultiLine"
-            android:text="@string/topicNotes"
-            android:textStyle="bold"
-            android:textColor="@color/purple_500"
-            tools:ignore="TextViewEdits" />
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/indent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/itemTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/indent"
-            android:text="@string/notes"
-            android:inputType="textMultiLine"
-            tools:ignore="TextViewEdits" />
-</LinearLayout>
+                <TextView
+                    android:id="@+id/itemTopic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/indent"
+                    android:text="@string/topicNotes"
+                    android:textColor="@color/purple_500"
+                    android:textStyle="bold"
+                    tools:ignore="TextViewEdits" />
+
+                <TextView
+                    android:id="@+id/itemText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/indent"
+                    android:text="@string/notes"
+                    tools:ignore="TextViewEdits" />
+        </LinearLayout>
+</androidx.cardview.widget.CardView>

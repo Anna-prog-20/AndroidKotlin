@@ -3,4 +3,6 @@
 
     <string name="notes">Заметки</string>
     <string name="topicNotes">Заголовок</string>
+
+    <string name="addNote">Добавить запись</string>
 </resources>
