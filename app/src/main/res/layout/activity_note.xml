@@ -38,7 +38,7 @@
                 android:id="@+id/titleEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"></com.google.android.material.textfield.TextInputEditText>
+                android:textColor="@android:color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@null"
-            android:hint="@string/textNote"></androidx.appcompat.widget.AppCompatEditText>
+            android:hint="@string/textNote" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/colorSelected"

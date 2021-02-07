@@ -5,4 +5,9 @@
         android:id="@+id/itemAddNote"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/addNote" />
+    <item
+        android:id="@+id/itemLogout"
+        android:title="@string/logout"
+        app:showAsAction="always">
+    </item>
 </menu>

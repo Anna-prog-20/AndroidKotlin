@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 
 private const val NOTES_COLLECTION = "notes"
+private const val USERS_COLLECTION = "users"
 
 class FireStoreProvider : RemoteDataProvider {
 
@@ -16,56 +18,91 @@ class FireStoreProvider : RemoteDataProvider {
     }
 
     private val db = FirebaseFirestore.getInstance()
-    private val notesReference = db.collection(NOTES_COLLECTION)
+    private val currentUser
+        get() = FirebaseAuth.getInstance().currentUser
 
-    override fun subscribeToAllNotes(): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
+    private fun getUserNotesCollection() = currentUser?.let { firebaseUser ->
+        db.collection(USERS_COLLECTION).document(firebaseUser.uid).collection(NOTES_COLLECTION)
+    } ?: throw NoAuthException()
 
-        notesReference.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                result.value = NoteResult.Error(e)
-            } else if (snapshot != null) {
-                val notes = mutableListOf<Note>()
-
-                for (doc: QueryDocumentSnapshot in snapshot) {
-                    notes.add(doc.toObject(Note::class.java))
+    override fun subscribeToAllNotes(): LiveData<NoteResult> =
+        MutableLiveData<NoteResult>().apply {
+            try {
+                getUserNotesCollection().addSnapshotListener { snapshot, e ->
+                    value = e?.let { exeption ->
+                        NoteResult.Error(exeption)
+                    }
+                        ?: snapshot?.let { query ->
+                            val notes = query.documents.map { document ->
+                                document.toObject(Note::class.java)
+                            }
+                            NoteResult.Success(notes)
+                        }
                 }
-                result.value = NoteResult.Success(notes)
+            } catch (e: Throwable) {
+                value = NoteResult.Error(e)
             }
         }
 
-        return result
-    }
-
-    override fun getNoteById(id: String): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
-
-        notesReference.document(id)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                result.value =
-                    NoteResult.Success(snapshot.toObject(Note::class.java))
-            }.addOnFailureListener { result.value = NoteResult.Error(it) }
-
-        return result
-    }
-
-    override fun saveNote(note: Note): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
-
-        notesReference.document(note.id)
-            .set(note)
-            .addOnSuccessListener {
-                Log.d(TAG, "Заметка $note успешно сохранена")
-                result.value = NoteResult.Success(note)
-            }.addOnFailureListener {
-                OnFailureListener { exeption ->
-                    Log.d(TAG, "Ошибка при сохранении $note, сообщение: ${exeption.message}")
-                    result.value = NoteResult.Error(exeption)
-                }
+    override fun getNoteById(id: String): LiveData<NoteResult> =
+        MutableLiveData<NoteResult>().apply {
+            try {
+                getUserNotesCollection().document(id)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        value = NoteResult.Success(document.toObject(Note::class.java))
+                    }.addOnFailureListener { exeption ->
+                        value = NoteResult.Error(exeption)
+                    }
+            } catch (e: Throwable) {
+                value = NoteResult.Error(e)
             }
+        }
 
-        return result
-    }
+    override fun saveNote(note: Note): LiveData<NoteResult> =
+        MutableLiveData<NoteResult>().apply {
+            try {
+                getUserNotesCollection().document(note.id)
+                    .set(note)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "Заметка $note успешно сохранена")
+                        value = NoteResult.Success(note)
+                    }.addOnFailureListener {
+                        OnFailureListener { exeption ->
+                            Log.d(
+                                TAG,
+                                "Ошибка при сохранении $note, сообщение: ${exeption.message}"
+                            )
+                            value = NoteResult.Error(exeption)
+                        }
+                    }
+            } catch (e: Throwable) {
+                value = NoteResult.Error(e)
+            }
+        }
+
+    override fun getCurrentUser(): LiveData<User?> =
+        MutableLiveData<User?>().apply {
+            value = currentUser?.let { User(it.displayName ?: "", it.email ?: "") }
+        }
+
+    override fun deleteNote(note: Note): LiveData<NoteResult> =
+        MutableLiveData<NoteResult>().apply {
+            try {
+                getUserNotesCollection().document(note.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "Заметка $note успешно удалена")
+                        value = NoteResult.Success(note)
+                    }.addOnFailureListener {
+                        OnFailureListener { exeption ->
+                            Log.d(TAG, "Ошибка при удалении $note, сообщение: ${exeption.message}")
+                            value = NoteResult.Error(exeption)
+                        }
+                    }
+            } catch (e: Throwable) {
+                value = NoteResult.Error(e)
+            }
+        }
 
 }
