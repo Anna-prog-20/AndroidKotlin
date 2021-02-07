@@ -4,5 +4,9 @@
     <string name="notes">Заметки</string>
     <string name="topicNotes">Заголовок</string>
 
-    <string name="addNote">Добавить запись</string>
+    <string name="addNote">Добавить заметку</string>
+    <string name="textNote">Текст заметки</string>
+    <string name="new_note_title">Новая заметка</string>
+    <string name="lable_color">Цыет заметки</string>
+    <string name="colorSelected">Выбрать цвет</string>
 </resources>

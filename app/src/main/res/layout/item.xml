@@ -18,20 +18,16 @@
                     android:id="@+id/itemTopic"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textMultiLine"
                     android:padding="@dimen/indent"
                     android:text="@string/topicNotes"
                     android:textColor="@color/purple_500"
-                    android:textStyle="bold"
-                    tools:ignore="TextViewEdits" />
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/itemText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textMultiLine"
                     android:padding="@dimen/indent"
-                    android:text="@string/notes"
-                    tools:ignore="TextViewEdits" />
+                    android:text="@string/notes" />
         </LinearLayout>
 </androidx.cardview.widget.CardView>
