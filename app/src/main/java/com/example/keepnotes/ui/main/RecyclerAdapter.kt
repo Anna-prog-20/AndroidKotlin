@@ -16,6 +16,7 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
             field = value
             notifyDataSetChanged()
         }
+    var noteSelected: Note? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
@@ -35,10 +36,18 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
         val ui: ItemBinding = ItemBinding.bind(itemView)
 
         fun bind(note: Note) {
-            ui.itemTopic.text = note.topic
-            ui.itemText.text = note.text
-            itemView.setBackgroundColor(note.color)
-            itemView.setOnClickListener { onItemClickCallback.onItemClicked(note) }
+            note.run {
+                ui.itemTopic.text = topic
+                ui.itemText.text = text
+                itemView.setBackgroundColor(color)
+                itemView.setOnClickListener { onItemClickCallback.onItemClicked(this) }
+                itemView.setOnLongClickListener {
+                    noteSelected = this
+                    itemView.showContextMenu()
+                    true
+                }
+            }
+
         }
 
     }
