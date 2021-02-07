@@ -9,7 +9,7 @@ import com.example.keepnotes.R
 class DeleteNoteDialog : DialogFragment() {
     companion object {
         val TAG = "${DeleteNoteDialog::class.java} TAG"
-        fun createInsance() = DeleteNoteDialog()
+        fun createInstance() = DeleteNoteDialog()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
@@ -17,7 +17,7 @@ class DeleteNoteDialog : DialogFragment() {
             .setTitle(R.string.delete_note_dialog_title)
             .setMessage(R.string.delete_note_dialog_message)
             .setPositiveButton(R.string.button_ok) { _, _ ->
-                (activity as MainActivity).onDeleteNote()
+                (activity as NoteListener).onDeleteNote()
             }
             .setNegativeButton(R.string.button_cancel) { _, _ -> dismiss() }
             .create()

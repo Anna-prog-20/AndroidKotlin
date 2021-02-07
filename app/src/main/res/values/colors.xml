@@ -15,6 +15,19 @@
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
 
+    <color name="color_blue">#5CC8F8</color>
+    <color name="color_violet">#E780FA</color>
+    <color name="color_red">#FA5649</color>
+    <color name="color_pink">#FA6397</color>
+    <color name="color_orange">#FB8762</color>
+    <color name="color_yellow">#FBED6F</color>
+    <color name="color_lime">#CBFD7B</color>
+    <color name="color_green">#84FB89</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_gray">#878384</color>
+
     <color name="color_note">#FF039BE5</color>
+    <color name="color_note_default">@color/color_violet</color>
+    <color name="color_stoke_default">#000000</color>
 
 </resources>
