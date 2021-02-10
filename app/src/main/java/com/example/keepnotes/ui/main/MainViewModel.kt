@@ -1,43 +1,47 @@
 package com.example.keepnotes.ui.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Observer
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.model.NoteResult
 import com.example.keepnotes.model.NoteResult.Error
 import com.example.keepnotes.model.Repository
 import com.example.keepnotes.ui.base.BaseViewModel
+import com.example.keepnotes.ui.note.NoteViewState
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class MainViewModel(private val repository: Repository) :
-    BaseViewModel<List<Note>?, MainViewState>() {
+class MainViewModel(val repository: Repository) :
+    BaseViewModel<List<Note>?>() {
 
-    private val repositoryNotes = repository.getNotes()
-    private val notesObserver = object : Observer<NoteResult> {
-        override fun onChanged(noteResult: NoteResult?) {
-            noteResult?.let {
-                when (it) {
-                    is NoteResult.Success<*> -> {
-                        viewStateLiveData.value =
-                            MainViewState(notes = it.data as? List<Note>)
-                    }
-                    is Error -> {
-                        viewStateLiveData.value = MainViewState(error = it.error)
-                    }
+    private val notesChannel by lazy { runBlocking { repository.getNotes() } }
+
+    init {
+        launch {
+            notesChannel.consumeEach { noteResult ->
+                when (noteResult) {
+                    is NoteResult.Success<*> -> setData(noteResult.data as? List<Note>)
+                    is NoteResult.Error -> setError(noteResult.error)
                 }
             }
         }
-
-    }
-
-    init {
-        viewStateLiveData.value = MainViewState()
-        repositoryNotes.observeForever(notesObserver)
-    }
-
-    override fun onCleared() {
-        repositoryNotes.removeObserver(notesObserver)
     }
 
     fun deleteNote(noteId: String) {
-        repository.deleteNote(noteId)
+        launch {
+            try {
+                repository.deleteNote(noteId)
+            } catch (e: Throwable) {
+                setError(e)
+            }
+
+        }
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public override fun onCleared() {
+        notesChannel.cancel()
+        super.onCleared()
     }
 }

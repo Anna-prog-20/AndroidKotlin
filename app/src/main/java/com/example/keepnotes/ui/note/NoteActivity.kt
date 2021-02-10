@@ -16,12 +16,14 @@ import com.example.keepnotes.databinding.ActivityNoteBinding
 import com.example.keepnotes.model.*
 import com.example.keepnotes.ui.base.BaseActivity
 import com.example.keepnotes.ui.main.DeleteNoteDialog
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 private const val SAVE_DELAY = 2000L
 
-class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(),
+class NoteActivity : BaseActivity<NoteViewState.Data>(),
     DeleteNoteDialog.NoteListener {
 
     companion object {
@@ -56,18 +58,17 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(),
 
     private fun triggerSaveNote() {
         if (ui.titleEt.text == null || ui.titleEt.text!!.length < 3) return
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                note = note?.copy(
-                    topic = ui.titleEt.text.toString(),
-                    text = ui.textEt.text.toString(),
-                    color = colorSelectedPicker,
-                    lastChanged = Date()
-                )
-                    ?: createNewNote()
-                note?.let { viewModel.saveChanges(it) }
-            }, SAVE_DELAY
-        )
+        launch {
+            delay(SAVE_DELAY)
+            note = note?.copy(
+                topic = ui.titleEt.text.toString(),
+                text = ui.textEt.text.toString(),
+                color = colorSelectedPicker,
+                lastChanged = Date()
+            )
+                ?: createNewNote()
+            note?.let { viewModel.saveChanges(it) }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.keepnotes.R
 import com.example.keepnotes.databinding.ActivityMainBinding
@@ -16,7 +15,7 @@ import com.firebase.ui.auth.AuthUI
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
+class MainActivity() : BaseActivity<List<Note>?>(),
     LogoutDialog.LogoutListener, DeleteNoteDialog.NoteListener {
 
     companion object {
@@ -101,10 +100,7 @@ class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
     }
 
     override fun renderData(data: List<Note>?) {
-        data?.let {
-            adapter.notes = it
-        }
-            ?: return
+        data?.let { adapter.notes = it }
     }
 
     override fun onLogout() {
