@@ -2,24 +2,13 @@ package com.example.keepnotes.model
 
 import androidx.lifecycle.MutableLiveData
 
-object Repository {
+class Repository(private val remoteProvider: RemoteDataProvider) {
     private val notesLiveData = MutableLiveData<List<Note>>()
-    private var notes: MutableList<Note> = mutableListOf()
-    private val remoteProvider: RemoteDataProvider = FireStoreProvider()
 
-    init {
-        notesLiveData.value = notes
-    }
-
-    fun setNotes(listNotes: MutableList<Note>) {
-        notes = listNotes
-        notesLiveData.value = notes
-    }
-
-    fun getNotes() = remoteProvider.subscribeToAllNotes()
-    fun saveNote(note: Note) = remoteProvider.saveNote(note)
-    fun deleteNote(note: Note) = remoteProvider.deleteNote(note)
-    fun getNoteById(id: String) = remoteProvider.getNoteById(id)
-    fun getCurrentUser() = remoteProvider.getCurrentUser()
+    suspend fun getNotes() = remoteProvider.subscribeToAllNotes()
+    suspend fun saveNote(note: Note) = remoteProvider.saveNote(note)
+    suspend fun deleteNote(noteId: String) = remoteProvider.deleteNote(noteId)
+    suspend fun getNoteById(id: String) = remoteProvider.getNoteById(id)
+    suspend fun getCurrentUser() = remoteProvider.getCurrentUser()
 
 }

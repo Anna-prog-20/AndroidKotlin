@@ -15,10 +15,22 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_note"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="@string/app_name"
             app:titleTextColor="@color/white" />
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+            <com.example.keepnotes.ui.customviews.ColorPickerView
+                android:id="@+id/color_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </com.example.keepnotes.ui.customviews.ColorPickerView>
+
+        </HorizontalScrollView>
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -48,16 +60,6 @@
             android:layout_marginTop="16dp"
             android:background="@null"
             android:hint="@string/textNote" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/colorSelected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:onClick="onClickButton"
-            android:text="@string/colorSelected">
-
-        </androidx.appcompat.widget.AppCompatButton>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

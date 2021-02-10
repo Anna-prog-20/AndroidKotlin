@@ -3,10 +3,12 @@ package com.example.keepnotes.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.keepnotes.R
 import com.example.keepnotes.databinding.ItemBinding
 import com.example.keepnotes.model.Note
+import com.example.keepnotes.model.getColorInt
 
 
 class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
@@ -39,7 +41,7 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
             note.run {
                 ui.itemTopic.text = topic
                 ui.itemText.text = text
-                itemView.setBackgroundColor(color)
+                (itemView as CardView).setCardBackgroundColor(color.getColorInt(itemView.context))
                 itemView.setOnClickListener { onItemClickCallback.onItemClicked(this) }
                 itemView.setOnLongClickListener {
                     noteSelected = this
@@ -47,9 +49,7 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
                     true
                 }
             }
-
         }
-
     }
 
 }

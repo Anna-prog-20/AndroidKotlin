@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/itemAddNote"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/addNote" />
+        android:title="@string/addNote"
+        android:icon="@drawable/add_note"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/itemLogout"
         android:title="@string/logout"
-        app:showAsAction="always">
+        android:icon="@drawable/exit_account"
+        app:showAsAction="ifRoom">
     </item>
 </menu>

@@ -2,27 +2,29 @@ package com.example.keepnotes.ui.splash
 
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.ViewModelProvider
 import com.example.keepnotes.databinding.ActivitySplashBinding
-import com.example.keepnotes.model.NameActivity
 import com.example.keepnotes.ui.base.BaseActivity
 import com.example.keepnotes.ui.main.MainActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val START_DELAY = 1000L
 
-class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity : BaseActivity<Boolean>() {
     override val ui: ActivitySplashBinding by lazy { ActivitySplashBinding.inflate(layoutInflater) }
-    override val viewModel: SplashViewModel by lazy {
-        ViewModelProvider(this).get(SplashViewModel::class.java)
-    }
+    override val viewModel: SplashViewModel by viewModel()
 
     override fun onResume() {
         super.onResume()
-        Handler(Looper.getMainLooper()).postDelayed({ viewModel.requestUser() }, START_DELAY)
+        launch {
+            delay(START_DELAY)
+            viewModel.requestUser()
+        }
     }
 
-    override fun renderData(data: Boolean?) {
-        data?.takeIf { it }?.let { startMainActivity() }
+    override fun renderData(data: Boolean) {
+        if (data) startMainActivity()
     }
 
     private fun startMainActivity() {
