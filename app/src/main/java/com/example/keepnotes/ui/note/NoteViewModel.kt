@@ -1,6 +1,5 @@
 package com.example.keepnotes.ui.note
 
-import androidx.lifecycle.Observer
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.model.NoteResult
 import com.example.keepnotes.model.NoteResult.Error

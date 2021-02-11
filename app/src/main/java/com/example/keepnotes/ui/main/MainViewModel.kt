@@ -1,5 +1,6 @@
 package com.example.keepnotes.ui.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Observer
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.model.NoteResult
@@ -7,7 +8,7 @@ import com.example.keepnotes.model.NoteResult.Error
 import com.example.keepnotes.model.Repository
 import com.example.keepnotes.ui.base.BaseViewModel
 
-class MainViewModel(private val repository: Repository) :
+class MainViewModel(val repository: Repository) :
     BaseViewModel<List<Note>?, MainViewState>() {
 
     private val repositoryNotes = repository.getNotes()
@@ -25,7 +26,6 @@ class MainViewModel(private val repository: Repository) :
                 }
             }
         }
-
     }
 
     init {
@@ -33,7 +33,8 @@ class MainViewModel(private val repository: Repository) :
         repositoryNotes.observeForever(notesObserver)
     }
 
-    override fun onCleared() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public override fun onCleared() {
         repositoryNotes.removeObserver(notesObserver)
     }
 
