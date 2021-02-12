@@ -1,6 +1,7 @@
 package com.example.keepnotes.ui.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.model.NoteResult
@@ -22,6 +23,7 @@ class MainViewModelTest {
 
     private val mockRepository = mockk<Repository>()
     private val notesLiveData = MutableLiveData<NoteResult>()
+
     private lateinit var viewModel: MainViewModel
 
     @Before
@@ -45,7 +47,8 @@ class MainViewModelTest {
         val testData = Throwable("error")
 
         viewModel.getViewState().observeForever {
-            result = it?.error }
+            result = it?.error
+        }
         notesLiveData.value = NoteResult.Error(testData)
 
         assertEquals(result, testData)
@@ -56,24 +59,10 @@ class MainViewModelTest {
         var result: List<Note>? = null
         val testData = listOf(Note(id = "1"), Note(id = "2"))
 
-        viewModel.getViewState().observeForever { result = it?.data}
+        viewModel.getViewState().observeForever { result = it?.data }
         notesLiveData.value = NoteResult.Success(testData)
 
         assertEquals(testData, result)
-    }
-
-    @Test
-    fun `should deleted Notes`() {
-        var result: List<Note>? = listOf(Note(id = "1"))
-        val testData = listOf(Note(id = "1"), Note(id = "2"))
-
-//        viewModel.getViewState().observeForever {
-//            result = it?.data}
-//        notesLiveData.value = NoteResult.Success(testData)
-//        notesLiveData.value
-//        viewModel.deleteNote("2")
-
-        //assertEquals(testData, result)
     }
 
     @Test
