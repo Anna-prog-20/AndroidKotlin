@@ -2,28 +2,27 @@ package com.example.keepnotes.ui.note
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModelProvider
 import com.example.keepnotes.R
 import com.example.keepnotes.databinding.ActivityNoteBinding
-import com.example.keepnotes.model.NameActivity
-import com.example.keepnotes.model.Note
-import com.example.keepnotes.model.format
+import com.example.keepnotes.model.*
 import com.example.keepnotes.ui.base.BaseActivity
-import com.jaredrummler.android.colorpicker.ColorPickerDialog
-import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import com.jaredrummler.android.colorpicker.ColorShape
+import com.example.keepnotes.ui.main.DeleteNoteDialog
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
+private const val SAVE_DELAY = 2000L
 
-class NoteActivity : BaseActivity<Note?, NoteViewState>(),
-    ColorPickerDialogListener {
+class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(),
+    DeleteNoteDialog.NoteListener {
 
     companion object {
         private var EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
@@ -36,10 +35,11 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(),
     }
 
     override val ui: ActivityNoteBinding by lazy { ActivityNoteBinding.inflate(layoutInflater) }
-    override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+    override val viewModel: NoteViewModel by viewModel()
 
     private var note: Note? = null
-    private var colorSelectedInt: Int = 0
+
+    private var colorSelectedPicker: Color = Color.BLUE
     private val textChangeListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             triggerSaveNote()
@@ -52,26 +52,47 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(),
         override fun afterTextChanged(s: Editable?) {
             Log.i("TAG", "afterTextChanged")
         }
-
     }
 
     private fun triggerSaveNote() {
         if (ui.titleEt.text == null || ui.titleEt.text!!.length < 3) return
-        note = note?.copy(
-            topic = ui.titleEt.text.toString(),
-            text = ui.textEt.text.toString(),
-            color = colorSelectedInt,
-            lastChanged = Date()
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                note = note?.copy(
+                    topic = ui.titleEt.text.toString(),
+                    text = ui.textEt.text.toString(),
+                    color = colorSelectedPicker,
+                    lastChanged = Date()
+                )
+                    ?: createNewNote()
+                note?.let { viewModel.saveChanges(it) }
+            }, SAVE_DELAY
         )
-            ?: createNewNote()
-        note?.let { viewModel.saveChanges(it) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val noteId = intent.getStringExtra(EXTRA_NOTE)
+        setOnClickView()
         initToolBar()
-        noteId?.let { viewModel.loadNote(it) }
+        setEditListener()
+        noteId?.let {
+            viewModel.loadNote(it)
+        }
+    }
+
+    private fun setOnClickView() {
+        ui.colorPicker.onColorClickListener = {
+            colorSelectedPicker = it
+            setColorToolBar(it)
+            triggerSaveNote()
+        }
+        ui.titleEt.setOnClickListener {
+            togglePalette()
+        }
+        ui.textEt.setOnClickListener {
+            togglePalette()
+        }
     }
 
     private fun initToolBar() {
@@ -81,67 +102,92 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(),
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setTitleToolBar()
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean =
+        menuInflater.inflate(R.menu.menu_note, menu).let { true }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            android.R.id.home -> super.onBackPressed().let { true }
+            R.id.itemSelectionColorNote -> togglePalette().let { true }
+            R.id.itemDeleteNote -> showDeleteNoteDialog().let { true }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    private fun togglePalette() {
+        if (ui.colorPicker.isOpen)
+            ui.colorPicker.close()
+        else
+            ui.colorPicker.open()
+    }
+
+    private fun showDeleteNoteDialog() {
+        supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG)
+            ?: DeleteNoteDialog.createInstance()
+                .show(supportFragmentManager, DeleteNoteDialog.TAG)
     }
 
     private fun setTitleToolBar() {
         supportActionBar?.title = note?.lastChanged?.format() ?: getString(R.string.new_note_title)
     }
 
+    private fun setColorToolBar(color: Color) {
+        ui.toolbar.setBackgroundColor(color.getColorInt(this@NoteActivity))
+    }
+
     private fun initView() {
         note?.run {
-            ui.titleEt.setText(topic)
-            ui.textEt.setText(text)
-            ui.toolbar.setBackgroundColor(color)
-            ui.colorSelected.setBackgroundColor(color)
+            removeEditListener()
+            if (topic != ui.titleEt.text.toString())
+                ui.titleEt.setText(topic)
+            if (text != ui.textEt.text.toString())
+                ui.textEt.setText(text)
         }
-        ui.titleEt.addTextChangedListener(textChangeListener)
-        ui.textEt.addTextChangedListener(textChangeListener)
+        setEditListener()
+        setColorToolBar(colorSelectedPicker)
     }
 
     private fun createNewNote(): Note =
         Note(
             topic = ui.titleEt.text.toString(),
             text = ui.textEt.text.toString(),
-            color = colorSelectedInt
+            color = colorSelectedPicker
         )
 
     override fun onBackPressed() {
-        triggerSaveNote()
+        if (ui.colorPicker.isOpen) {
+            ui.colorPicker.close()
+            return
+        }
         super.onBackPressed()
     }
 
-    override fun onColorSelected(dialogId: Int, color: Int) {
-        colorSelectedInt = color
-        ui.colorSelected.setBackgroundColor(colorSelectedInt)
-        ui.toolbar.setBackgroundColor(colorSelectedInt)
-    }
+    override fun renderData(data: NoteViewState.Data) {
+        if (data.isDeleted) finish()
+        this.note = data.note
+        data.note?.let { note ->
+            colorSelectedPicker = note.color
+        }
 
-    override fun onDialogDismissed(dialogId: Int) {
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun createColorPickerDialog() {
-        val colorPickerDialog = ColorPickerDialog.newBuilder()
-            .setColor(getColor(R.color.color_note))
-            .setDialogType(ColorPickerDialog.TYPE_PRESETS)
-            .setAllowCustom(true)
-            .setColorShape(ColorShape.CIRCLE)
-
-        note?.let { colorPickerDialog.setColor(it.color) }
-        colorPickerDialog.show(this)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun onClickButton(view: View) {
-        createColorPickerDialog()
-    }
-
-    override fun renderData(data: Note?) {
-        this.note = data
-        colorSelectedInt = note?.color ?: 0
         initView()
         setTitleToolBar()
+    }
+
+    private fun setEditListener() {
+        ui.titleEt.addTextChangedListener(textChangeListener)
+        ui.textEt.addTextChangedListener(textChangeListener)
+    }
+
+    private fun removeEditListener() {
+        ui.titleEt.removeTextChangedListener(textChangeListener)
+        ui.textEt.removeTextChangedListener(textChangeListener)
+    }
+
+    override fun onDeleteNote() {
+        note?.let {
+            viewModel.deleteNote()
+            super.onBackPressed()
+        }
     }
 }

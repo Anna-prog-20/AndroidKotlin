@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.keepnotes.R
 import com.example.keepnotes.databinding.ActivityMainBinding
-import com.example.keepnotes.model.NameActivity
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.ui.base.BaseActivity
 import com.example.keepnotes.ui.note.NoteActivity
 import com.example.keepnotes.ui.splash.SplashActivity
 import com.firebase.ui.auth.AuthUI
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
@@ -32,9 +32,7 @@ class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
     }
 
     override val ui: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    override val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-    }
+    override val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +60,7 @@ class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
 
     private fun showDeleteNoteDialog() {
         supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG)
-            ?: DeleteNoteDialog.createInsance()
+            ?: DeleteNoteDialog.createInstance()
                 .show(supportFragmentManager, DeleteNoteDialog.TAG)
     }
 
@@ -103,7 +101,10 @@ class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
     }
 
     override fun renderData(data: List<Note>?) {
-        adapter.notes = data ?: return
+        data?.let {
+            adapter.notes = it
+        }
+            ?: return
     }
 
     override fun onLogout() {
@@ -117,7 +118,7 @@ class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
 
     override fun onDeleteNote() {
         adapter.noteSelected?.let { noteSelected ->
-            viewModel.deleteNote(noteSelected)
+            viewModel.deleteNote(noteSelected.id)
         }
     }
 }

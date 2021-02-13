@@ -4,7 +4,7 @@ import com.example.keepnotes.model.NoAuthException
 import com.example.keepnotes.model.Repository
 import com.example.keepnotes.ui.base.BaseViewModel
 
-class SplashViewModel(private val repository: Repository = Repository) :
+class SplashViewModel(private val repository: Repository) :
     BaseViewModel<Boolean?, SplashViewState>() {
 
     fun requestUser() {
