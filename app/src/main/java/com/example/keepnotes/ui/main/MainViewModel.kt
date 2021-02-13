@@ -7,24 +7,23 @@ import com.example.keepnotes.model.NoteResult.Error
 import com.example.keepnotes.model.Repository
 import com.example.keepnotes.ui.base.BaseViewModel
 
-class MainViewModel(private val repository: Repository = Repository) :
+class MainViewModel(private val repository: Repository) :
     BaseViewModel<List<Note>?, MainViewState>() {
 
     private val repositoryNotes = repository.getNotes()
     private val notesObserver = object : Observer<NoteResult> {
         override fun onChanged(noteResult: NoteResult?) {
-            noteResult?.let {noteResult ->
-                when (noteResult) {
+            noteResult?.let {
+                when (it) {
                     is NoteResult.Success<*> -> {
                         viewStateLiveData.value =
-                            MainViewState(notes = noteResult.data as? List<Note>)
+                            MainViewState(notes = it.data as? List<Note>)
                     }
                     is Error -> {
-                        viewStateLiveData.value = MainViewState(error = noteResult.error)
+                        viewStateLiveData.value = MainViewState(error = it.error)
                     }
                 }
             }
-                ?: return
         }
 
     }
@@ -38,7 +37,7 @@ class MainViewModel(private val repository: Repository = Repository) :
         repositoryNotes.removeObserver(notesObserver)
     }
 
-    fun deleteNote(note: Note) {
-        repository.deleteNote(note)
+    fun deleteNote(noteId: String) {
+        repository.deleteNote(noteId)
     }
 }

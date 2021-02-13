@@ -11,15 +11,13 @@ import com.google.firebase.firestore.*
 private const val NOTES_COLLECTION = "notes"
 private const val USERS_COLLECTION = "users"
 
-class FireStoreProvider : RemoteDataProvider {
+class FireStoreProvider(
+    private val firebaseAuth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) : RemoteDataProvider {
 
-    companion object {
-        private val TAG = "${FireStoreProvider::class.java.simpleName} :"
-    }
-
-    private val db = FirebaseFirestore.getInstance()
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+        get() = firebaseAuth.currentUser
 
     private fun getUserNotesCollection() = currentUser?.let { firebaseUser ->
         db.collection(USERS_COLLECTION).document(firebaseUser.uid).collection(NOTES_COLLECTION)
@@ -51,8 +49,8 @@ class FireStoreProvider : RemoteDataProvider {
                     .get()
                     .addOnSuccessListener { document ->
                         value = NoteResult.Success(document.toObject(Note::class.java))
-                    }.addOnFailureListener { exeption ->
-                        value = NoteResult.Error(exeption)
+                    }.addOnFailureListener { it ->
+                        throw it
                     }
             } catch (e: Throwable) {
                 value = NoteResult.Error(e)
@@ -65,16 +63,9 @@ class FireStoreProvider : RemoteDataProvider {
                 getUserNotesCollection().document(note.id)
                     .set(note)
                     .addOnSuccessListener {
-                        Log.d(TAG, "Заметка $note успешно сохранена")
                         value = NoteResult.Success(note)
                     }.addOnFailureListener {
-                        OnFailureListener { exeption ->
-                            Log.d(
-                                TAG,
-                                "Ошибка при сохранении $note, сообщение: ${exeption.message}"
-                            )
-                            value = NoteResult.Error(exeption)
-                        }
+                        throw it
                     }
             } catch (e: Throwable) {
                 value = NoteResult.Error(e)
@@ -86,19 +77,15 @@ class FireStoreProvider : RemoteDataProvider {
             value = currentUser?.let { User(it.displayName ?: "", it.email ?: "") }
         }
 
-    override fun deleteNote(note: Note): LiveData<NoteResult> =
+    override fun deleteNote(noteId: String): LiveData<NoteResult> =
         MutableLiveData<NoteResult>().apply {
             try {
-                getUserNotesCollection().document(note.id)
+                getUserNotesCollection().document(noteId)
                     .delete()
                     .addOnSuccessListener {
-                        Log.d(TAG, "Заметка $note успешно удалена")
-                        value = NoteResult.Success(note)
+                        value = NoteResult.Success(null)
                     }.addOnFailureListener {
-                        OnFailureListener { exeption ->
-                            Log.d(TAG, "Ошибка при удалении $note, сообщение: ${exeption.message}")
-                            value = NoteResult.Error(exeption)
-                        }
+                        throw it
                     }
             } catch (e: Throwable) {
                 value = NoteResult.Error(e)

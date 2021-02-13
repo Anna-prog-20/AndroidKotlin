@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/itemSelectionColorNote"
+        android:title="@string/colorSelected"
+        android:icon="@drawable/selection_color"
+        app:showAsAction="ifRoom">
+    </item>
+    <item
+        android:id="@+id/itemDeleteNote"
+        android:title="@string/deleteNote"
+        android:icon="@drawable/delete_note"
+        app:showAsAction="never">
+    </item>
+</menu>

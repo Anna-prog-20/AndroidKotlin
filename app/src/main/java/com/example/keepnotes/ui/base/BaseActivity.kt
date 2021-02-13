@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
 import com.example.keepnotes.R
-import com.example.keepnotes.model.NameActivity
 import com.example.keepnotes.model.NoAuthException
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
@@ -59,8 +58,9 @@ abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN && resultCode != Activity.RESULT_OK)
+        if (requestCode == RC_SIGN_IN && resultCode != Activity.RESULT_OK) {
             finish()
+        }
     }
 
     abstract fun renderData(data: T)

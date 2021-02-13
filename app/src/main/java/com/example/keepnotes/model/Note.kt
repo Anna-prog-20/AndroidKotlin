@@ -9,7 +9,7 @@ data class Note(
     val id: String = UUID.randomUUID().toString(),
     var topic: String = "",
     var text: String = "",
-    var color: Int = 5,
+    var color: Color = Color.BLUE,
     val lastChanged: Date = Date()
 ) : Parcelable {
 
@@ -28,3 +28,17 @@ data class Note(
         return id.hashCode()
     }
 }
+
+enum class Color {
+    BLUE,
+    VIOLET,
+    RED,
+    PINK,
+    ORANGE,
+    YELLOW,
+    LIME,
+    GREEN,
+    WHITE,
+    GRAY
+}
+
