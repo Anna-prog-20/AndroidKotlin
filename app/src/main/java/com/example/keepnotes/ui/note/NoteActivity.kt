@@ -88,10 +88,10 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(),
             triggerSaveNote()
         }
         ui.titleEt.setOnClickListener {
-            togglePalette()
+            if (ui.colorPicker.isOpen) ui.colorPicker.close()
         }
         ui.textEt.setOnClickListener {
-            togglePalette()
+            if (ui.colorPicker.isOpen) ui.colorPicker.close()
         }
     }
 
@@ -116,10 +116,8 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(),
         }
 
     private fun togglePalette() {
-        if (ui.colorPicker.isOpen)
-            ui.colorPicker.close()
-        else
-            ui.colorPicker.open()
+        if (ui.colorPicker.isOpen) ui.colorPicker.close()
+        else ui.colorPicker.open()
     }
 
     private fun showDeleteNoteDialog() {
@@ -139,10 +137,8 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(),
     private fun initView() {
         note?.run {
             removeEditListener()
-            if (topic != ui.titleEt.text.toString())
-                ui.titleEt.setText(topic)
-            if (text != ui.textEt.text.toString())
-                ui.textEt.setText(text)
+            if (topic != ui.titleEt.text.toString()) ui.titleEt.setText(topic)
+            if (text != ui.textEt.text.toString()) ui.textEt.setText(text)
         }
         setEditListener()
         setColorToolBar(colorSelectedPicker)

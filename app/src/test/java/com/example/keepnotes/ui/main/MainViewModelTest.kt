@@ -1,8 +1,8 @@
 package com.example.keepnotes.ui.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.keepnotes.model.FireStoreProvider
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.model.NoteResult
 import com.example.keepnotes.model.Repository
@@ -29,6 +29,7 @@ class MainViewModelTest {
     @Before
     fun setUp() {
         every { mockRepository.getNotes() } returns notesLiveData
+        every { mockRepository.deleteNote("1").value } returns notesLiveData.value
         viewModel = MainViewModel(mockRepository)
     }
 
@@ -69,5 +70,16 @@ class MainViewModelTest {
     fun `should remove observer`() {
         viewModel.onCleared()
         assertFalse(notesLiveData.hasObservers())
+    }
+
+    @Test
+    fun should_call_deleteNote() {
+        val result: NoteResult = NoteResult.Success(listOf(Note(id = "1")))
+        val testData = listOf(Note(id = "1"), Note(id = "4"))
+        notesLiveData.value = NoteResult.Success(testData)
+        viewModel = MainViewModel(mockRepository)
+        viewModel.deleteNote("1")
+
+        assertEquals(notesLiveData.value, result)
     }
 }

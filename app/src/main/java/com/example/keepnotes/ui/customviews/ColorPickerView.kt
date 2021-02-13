@@ -15,7 +15,8 @@ import org.jetbrains.anko.dip
 private const val PALETTE_ANIMATION_DURATION = 150L
 private const val HEIGHT = "height"
 private const val SCALE = "scale"
-@Dimension(unit = DP) private const val COLOR_VIEW_PADDING = 8
+@Dimension(unit = DP)
+private const val COLOR_VIEW_PADDING = 8
 
 class ColorPickerView : LinearLayout {
 
@@ -88,14 +89,17 @@ class ColorPickerView : LinearLayout {
         animator.cancel()
         animator.setValues(
             PropertyValuesHolder.ofInt(HEIGHT, measuredHeight, desiredHeight),
-            PropertyValuesHolder.ofFloat(SCALE, getChildAt(0).scaleX, 1f))
+            PropertyValuesHolder.ofFloat(SCALE, getChildAt(0).scaleX, 1f)
+        )
         animator.start()
     }
 
     fun close() {
         animator.cancel()
-        animator.setValues(PropertyValuesHolder.ofInt(HEIGHT, measuredHeight, 0),
-            PropertyValuesHolder.ofFloat(SCALE, getChildAt(0).scaleX, 0f))
+        animator.setValues(
+            PropertyValuesHolder.ofInt(HEIGHT, measuredHeight, 0),
+            PropertyValuesHolder.ofFloat(SCALE, getChildAt(0).scaleX, 0f)
+        )
         animator.start()
     }
 }

@@ -41,7 +41,7 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
             note.run {
                 ui.itemTopic.text = topic
                 ui.itemText.text = text
-                (itemView as CardView).setCardBackgroundColor(color.getColorInt(itemView.context))
+                ui.itemNote.setCardBackgroundColor(color.getColorInt(itemView.context))
                 itemView.setOnClickListener { onItemClickCallback.onItemClicked(this) }
                 itemView.setOnLongClickListener {
                     noteSelected = this
