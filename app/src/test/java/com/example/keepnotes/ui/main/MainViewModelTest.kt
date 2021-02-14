@@ -1,5 +1,6 @@
 package com.example.keepnotes.ui.main
 
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.example.keepnotes.model.FireStoreProvider
@@ -29,7 +30,7 @@ class MainViewModelTest {
     @Before
     fun setUp() {
         every { mockRepository.getNotes() } returns notesLiveData
-        every { mockRepository.deleteNote("1").value } returns notesLiveData.value
+        every { mockRepository.deleteNote("1") } returns notesLiveData
         viewModel = MainViewModel(mockRepository)
     }
 
@@ -74,12 +75,7 @@ class MainViewModelTest {
 
     @Test
     fun should_call_deleteNote() {
-        val result: NoteResult = NoteResult.Success(listOf(Note(id = "1")))
-        val testData = listOf(Note(id = "1"), Note(id = "4"))
-        notesLiveData.value = NoteResult.Success(testData)
-        viewModel = MainViewModel(mockRepository)
         viewModel.deleteNote("1")
-
-        assertEquals(notesLiveData.value, result)
+        verify { mockRepository.deleteNote("1") }
     }
 }
