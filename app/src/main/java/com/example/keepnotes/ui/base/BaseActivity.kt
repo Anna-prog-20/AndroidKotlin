@@ -58,9 +58,8 @@ abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN && resultCode != Activity.RESULT_OK) {
+        if (requestCode == RC_SIGN_IN && resultCode != Activity.RESULT_OK)
             finish()
-        }
     }
 
     abstract fun renderData(data: T)

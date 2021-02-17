@@ -1,6 +1,5 @@
 package com.example.keepnotes.ui.main
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import com.example.keepnotes.R
 import com.example.keepnotes.databinding.ItemBinding
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.model.getColorInt
-import com.example.keepnotes.model.getColorRes
 
 
 class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
@@ -43,7 +41,7 @@ class RecyclerAdapter(val onItemClickCallback: IRVOnItemClick) :
             note.run {
                 ui.itemTopic.text = topic
                 ui.itemText.text = text
-                (itemView as CardView).setCardBackgroundColor(color.getColorInt(itemView.context))
+                ui.itemNote.setCardBackgroundColor(color.getColorInt(itemView.context))
                 itemView.setOnClickListener { onItemClickCallback.onItemClicked(this) }
                 itemView.setOnLongClickListener {
                     noteSelected = this

@@ -14,12 +14,16 @@ import androidx.core.content.ContextCompat
 import com.example.keepnotes.R
 import org.jetbrains.anko.dip
 
-@Dimension(unit = DP) private const val defRadiusDp = 16
-@Dimension(unit = DP) private const val defStrokeWidthDp = 1
+@Dimension(unit = DP)
+private const val defRadiusDp = 16
+@Dimension(unit = DP)
+private const val defStrokeWidthDp = 1
 
-class ColorCircleView @JvmOverloads constructor(context: Context,
-                                                attrs: AttributeSet? = null,
-                                                defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
+class ColorCircleView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
 
     private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -31,7 +35,8 @@ class ColorCircleView @JvmOverloads constructor(context: Context,
 
     private var center: Pair<Float, Float> = 0f to 0f
 
-    @Dimension(unit = PX) var radius: Float = dip(defRadiusDp).toFloat()
+    @Dimension(unit = PX)
+    var radius: Float = dip(defRadiusDp).toFloat()
 
     @ColorRes
     var fillColorRes: Int = R.color.color_note_default
@@ -40,13 +45,15 @@ class ColorCircleView @JvmOverloads constructor(context: Context,
             fillPaint.color = ContextCompat.getColor(context, value)
         }
 
-    @ColorRes var strokeColorRes: Int = R.color.color_stoke_default
+    @ColorRes
+    var strokeColorRes: Int = R.color.color_stoke_default
         set(value) {
             field = value
             strokePaint.color = ContextCompat.getColor(context, value)
         }
 
-    @Dimension(unit = PX) var strokeWidth: Float = dip(defStrokeWidthDp).toFloat()
+    @Dimension(unit = PX)
+    var strokeWidth: Float = dip(defStrokeWidthDp).toFloat()
         set(value) {
             field = value
             strokePaint.strokeWidth = value
@@ -58,14 +65,17 @@ class ColorCircleView @JvmOverloads constructor(context: Context,
         val defRadiusPx = dip(defRadiusDp).toFloat()
         radius = a.getDimension(R.styleable.ColorCircleView_circleRadius, defRadiusPx)
         fillColorRes = a.getResourceId(
-            R.styleable.ColorCircleView_fillColor, R.color.color_note_default)
+            R.styleable.ColorCircleView_fillColor, R.color.color_note_default
+        )
 
         val defStrokeWidthPx = dip(defStrokeWidthDp).toFloat()
         strokeWidth = a.getDimension(
-            R.styleable.ColorCircleView_width, defStrokeWidthPx)
+            R.styleable.ColorCircleView_width, defStrokeWidthPx
+        )
 
         strokeColorRes = a.getResourceId(
-            R.styleable.ColorCircleView_color, R.color.color_stoke_default)
+            R.styleable.ColorCircleView_color, R.color.color_stoke_default
+        )
         a.recycle()
     }
 
@@ -79,7 +89,7 @@ class ColorCircleView @JvmOverloads constructor(context: Context,
 
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        center = measuredWidth/2f to measuredHeight/2f
+        center = measuredWidth / 2f to measuredHeight / 2f
         super.onLayout(changed, left, top, right, bottom)
     }
 

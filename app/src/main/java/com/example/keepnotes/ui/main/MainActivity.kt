@@ -101,10 +101,7 @@ class MainActivity() : BaseActivity<List<Note>?, MainViewState>(),
     }
 
     override fun renderData(data: List<Note>?) {
-        data?.let {
-            adapter.notes = it
-        }
-            ?: return
+        data?.let { adapter.notes = it }
     }
 
     override fun onLogout() {

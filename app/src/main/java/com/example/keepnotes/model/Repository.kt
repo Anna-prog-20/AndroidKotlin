@@ -3,17 +3,7 @@ package com.example.keepnotes.model
 import androidx.lifecycle.MutableLiveData
 
 class Repository(private val remoteProvider: RemoteDataProvider) {
-    private val notesLiveData = MutableLiveData<List<Note>>()
-    private var notes: MutableList<Note> = mutableListOf()
-
-    init {
-        notesLiveData.value = notes
-    }
-
-    fun setNotes(listNotes: MutableList<Note>) {
-        notes = listNotes
-        notesLiveData.value = notes
-    }
+    //private val notesLiveData = MutableLiveData<List<Note>>()
 
     fun getNotes() = remoteProvider.subscribeToAllNotes()
     fun saveNote(note: Note) = remoteProvider.saveNote(note)

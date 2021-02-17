@@ -1,6 +1,6 @@
 package com.example.keepnotes.ui.note
 
-import androidx.lifecycle.Observer
+import androidx.annotation.VisibleForTesting
 import com.example.keepnotes.model.Note
 import com.example.keepnotes.model.NoteResult
 import com.example.keepnotes.model.NoteResult.Error
@@ -16,7 +16,8 @@ class NoteViewModel(val repository: Repository) :
         viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = note))
     }
 
-    override fun onCleared() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public override fun onCleared() {
         currentNote?.let { repository.saveNote(it) }
     }
 
